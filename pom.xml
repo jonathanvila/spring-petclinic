@@ -29,6 +29,11 @@
 
     <jacoco.version>0.8.2</jacoco.version>
 
+    <quarkus.version>1.0.0.Final</quarkus.version>
+    <surefire.version>2.22.0</surefire.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -109,6 +114,20 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
+
+
+  <!-- Quarkus Dependencies -->
+  <dependencyManagement>
+      <dependencies>
+          <dependency>
+              <groupId>io.quarkus</groupId>
+              <artifactId>quarkus-bom</artifactId>
+              <version>${quarkus.version}</version>
+              <type>pom</type>
+              <scope>import</scope>
+          </dependency>
+      </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
@@ -206,6 +225,29 @@
             <version>${mockito.version}</version>
           </dependency>
         </dependencies>
+      </plugin>
+
+      <!-- Quarkus Plugins -->
+      <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire.version}</version>
+          <configuration>
+              <systemProperties>
+                  <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+              </systemProperties>
+          </configuration>
+      </plugin>
+      <plugin>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-maven-plugin</artifactId>
+          <version>${quarkus.version}</version>
+          <executions>
+              <execution>
+                  <goals>
+                      <goal>build</goal>
+                  </goals>
+              </execution>
+          </executions>
       </plugin>
     </plugins>
   </build>
