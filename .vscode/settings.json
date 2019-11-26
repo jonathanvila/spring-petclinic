@@ -1,3 +1,5 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "githubNotificationsBell.oauthToken":"7cf131b33220f51efab6a821107dbfadb011e48d",
+    "org.eclipse.jdt.core.compiler.problem.missingSerialVersion": "ignore"
 }
