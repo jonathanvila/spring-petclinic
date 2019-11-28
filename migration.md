@@ -19,4 +19,6 @@
 
 ## Steps
 1. add Quarkus dependencies
+2. Spring Actuator
+   1. SmallRye metrics, health 
 
