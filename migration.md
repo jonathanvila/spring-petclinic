@@ -21,4 +21,9 @@
 1. add Quarkus dependencies
 2. Spring Actuator
    1. SmallRye metrics, health 
+3. Spring Cache
+   1. Using Infinispan embedded
+4. Use of H2 in memory database
+   1. Need to annotate Test classes in order to make the build compatible with GraalVM
+   2. https://quarkus.io/guides/datasource#in-memory-databases
 
