@@ -1,6 +1,7 @@
 # Migration of Spring Pet Clinic to Quarkus
 
 ## Libraries used
+
 1. Spring
    1. actuator
    2. cache
@@ -18,7 +19,8 @@
 8. bootstrap
 
 ## Steps
-1. add Quarkus dependencies
+
+1. Add Quarkus dependencies
 2. Spring Actuator
    1. SmallRye metrics, health 
 3. Spring Cache
@@ -26,4 +28,16 @@
 4. Use of H2 in memory database
    1. Need to annotate Test classes in order to make the build compatible with GraalVM
    2. https://quarkus.io/guides/datasource#in-memory-databases
+5. Replace Spring Data
+   1. Using Quarkus Hibernate Panache
+   2. removing use of @Param in find methods
+6. Replace Spring PropertyComparator and MutableSortDefinition
+   1. Using a Java Stream lambda
+7. Replace Spring ToStringCreator
+   1. Using StringBuilder
+8. Replace Find methods of Spring Repository
+   1. Using PanacheRepository
+   2. Putting the Query inside the method
+   3. Converting the interface into a Class
+9. Converting Entity to PanacheEntity
 

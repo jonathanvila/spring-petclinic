@@ -17,9 +17,15 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+/*
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
+*/
+
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 /**
  * Repository class for <code>Pet</code> domain objects All method names are compliant with Spring Data naming
@@ -31,29 +37,34 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface PetRepository extends Repository<Pet, Integer> {
+public class PetRepository implements PanacheRepository<Pet> {
 
     /**
      * Retrieve all {@link PetType}s from the data store.
      * @return a Collection of {@link PetType}s.
      */
-    @Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
-    @Transactional(readOnly = true)
-    List<PetType> findPetTypes();
+    @Transactional
+    List<PetType> findPetTypes() {
+        return PetType.list("SELECT ptype FROM PetType ptype ORDER BY ptype.name");
+    };
 
     /**
      * Retrieve a {@link Pet} from the data store by id.
      * @param id the id to search for
      * @return the {@link Pet} if found
      */
-    @Transactional(readOnly = true)
-    Pet findById(Integer id);
+    @Transactional
+    Pet findById(Integer id){
+        return find("id", id).firstResult();
+    };
 
     /**
      * Save a {@link Pet} to the data store, either inserting or updating it.
      * @param pet the {@link Pet} to save
      */
-    void save(Pet pet);
+    void save(Pet pet){
+        save(pet);
+    };
 
 }
 
