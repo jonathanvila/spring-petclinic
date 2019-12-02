@@ -40,4 +40,7 @@
    2. Putting the Query inside the method
    3. Converting the interface into a Class
 9. Converting Entity to PanacheEntity
+10. When we want to implament a cacheable *findAll* method we have issues
+    1. because findAll is already implemented and doesnt have a List\<T\> as return type
+    2. for the moment renamed to find_All
 

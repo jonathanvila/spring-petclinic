@@ -16,13 +16,9 @@
 package org.springframework.samples.petclinic.vet;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.springframework.cache.annotation.Cacheable;
-
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 /**
@@ -46,10 +42,10 @@ public class VetRepository implements PanacheRepository<Vet> {
      * @return a <code>Collection</code> of <code>Vet</code>s
      */
     @Transactional
-    @Cacheable("vets")
-    public List<Vet> findAll() {
+    //@Cacheable("vets")
+    public List<Vet> find_All() {
         return Vet.listAll();
-    };
+    }
 
 
 }
