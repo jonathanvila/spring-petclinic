@@ -15,9 +15,11 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+/*
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+*/
 
 /**
  * <code>Validator</code> for <code>Pet</code> forms.
@@ -37,7 +39,7 @@ public class PetValidator implements Validator {
         Pet pet = (Pet) obj;
         String name = pet.getName();
         // name validation
-        if (!StringUtils.hasLength(name)) {
+        if (!StringUtils.isNotBlank(name)) {
             errors.rejectValue("name", REQUIRED, REQUIRED);
         }
 

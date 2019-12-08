@@ -17,11 +17,11 @@ package org.springframework.samples.petclinic.owner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,10 +32,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
+/*
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
+*/
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.visit.Visit;
 
@@ -51,7 +52,7 @@ import org.springframework.samples.petclinic.visit.Visit;
 public class Pet extends NamedEntity {
 
     @Column(name = "birth_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd") TODO
     private LocalDate birthDate;
 
     @ManyToOne
@@ -102,9 +103,15 @@ public class Pet extends NamedEntity {
 
     public List<Visit> getVisits() {
         List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
+        return sortedVisits.stream().sorted((a,b) -> {
+            return a.getDate().compareTo(b.getDate()); 
+        }).collect(Collectors.toList());
+/*
         PropertyComparator.sort(sortedVisits,
                 new MutableSortDefinition("date", false, false));
-        return Collections.unmodifiableList(sortedVisits);
+
+        return Collections.unmodifiableList(sortedVisits); TODO
+        */
     }
 
     public void addVisit(Visit visit) {
