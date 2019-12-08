@@ -44,5 +44,7 @@
     1. because findAll is already implemented and doesnt have a List\<T\> as return type
     2. for the moment renamed to find_All
 11. Added JUnit 5
+12. Replace Spring StringUtils by Apache Commons StringUtils
+13. 
 
 
