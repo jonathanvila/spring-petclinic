@@ -16,40 +16,35 @@
 
 package org.springframework.samples.petclinic.owner;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import org.apache.http.HttpStatus;
+import org.assertj.core.condition.AnyOf;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-
-import io.quarkus.test.junit.QuarkusTest;
+import org.mockito.Mock;
 
 /**
  * Test class for {@link OwnerController}
  *
  * @author Colin But
  */
-@QuarkusTest
 public class OwnerControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private OwnerRepository owners;
 
     private Owner george;
@@ -63,32 +58,34 @@ public class OwnerControllerTests {
         george.setAddress("110 W. Liberty St.");
         george.setCity("Madison");
         george.setTelephone("6085551023");
-        given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
+        when(this.owners.findById(TEST_OWNER_ID)).thenReturn(george);
     }
 
     @Test
     public void testInitCreationForm() throws Exception {
-        mockMvc.perform(get("/owners/new"))
-            .andExpect(status().isOk())
+        given().when().get("/owners/new")
+            .then().statusCode(HttpStatus.SC_OK)
             .andExpect(model().attributeExists("owner"))
             .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 
     @Test
     public void testProcessCreationFormSuccess() throws Exception {
-        mockMvc.perform(post("/owners/new")
-            .param("firstName", "Joe")
-            .param("lastName", "Bloggs")
-            .param("address", "123 Caramel Street")
-            .param("city", "London")
-            .param("telephone", "01316761638")
-        )
-            .andExpect(status().is3xxRedirection());
+        given()
+        .param("firstName", "Joe")
+        .param("lastName", "Bloggs")
+        .param("address", "123 Caramel Street")
+        .param("city", "London")
+        .param("telephone", "01316761638")
+        .when()
+        .post("/owners/new")
+        .then().assertThat()
+        .statusCode(anyOf(is(HttpStatus.SC_MOVED_PERMANENTLY), is(HttpStatus.SC_MOVED_TEMPORARILY)));
     }
 
     @Test
     public void testProcessCreationFormHasErrors() throws Exception {
-        mockMvc.perform(post("/owners/new")
+        given().post("/owners/new")
             .param("firstName", "Joe")
             .param("lastName", "Bloggs")
             .param("city", "London")
